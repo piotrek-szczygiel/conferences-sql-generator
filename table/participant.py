@@ -6,7 +6,7 @@ from fake import fake
 @dataclass
 class Participant:
     TABLE = 'participant'
-    ID = 0
+    ID = 1
 
     id: int
     first_name: str
@@ -14,9 +14,11 @@ class Participant:
     email: str
 
     @staticmethod
-    def random():
+    def __post_init__():
         Participant.ID += 1
 
+    @staticmethod
+    def random():
         return Participant(
             Participant.ID,
             fake.first_name(),

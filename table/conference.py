@@ -7,7 +7,7 @@ from fake import fake
 @dataclass
 class Conference:
     TABLE = 'conference'
-    ID = 0
+    ID = 1
 
     id: int
     name: str
@@ -15,9 +15,11 @@ class Conference:
     student_price_percent: float
 
     @staticmethod
-    def random():
+    def __post_init__():
         Conference.ID += 1
 
+    @staticmethod
+    def random():
         return Conference(
             Conference.ID,
             'Konferencja ' + fake.catch_phrase(),

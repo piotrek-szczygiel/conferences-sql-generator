@@ -7,15 +7,19 @@ from fake import fake
 @dataclass
 class Client:
     TABLE = 'client'
-    ID = 0
+    ID = 1
 
     id: int
     is_company: bool
     name: str
     email: str
     password: str
-    nip: Optional[int]
+    nip: Optional[str]
     address: Optional[str]
+
+    @staticmethod
+    def __post_init__():
+        Client.ID += 1
 
     @staticmethod
     def random():
@@ -26,22 +30,18 @@ class Client:
 
     @staticmethod
     def random_company():
-        Client.ID += 1
-
         return Client(
             Client.ID,
             True,
             fake.company(),
             fake.email(),
             fake.sha256(),
-            fake.random_number(digits=10),
+            str(fake.random_number(digits=10)),
             fake.address().replace('\n', ', ')
         )
 
     @staticmethod
     def random_individual():
-        Client.ID += 1
-
         return Client(
             Client.ID,
             False,
