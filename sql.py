@@ -1,5 +1,5 @@
-def delete(table):
-    return 'delete from {0};\ndbcc checkident({0}, reseed, 0);\n'.format(table) + '\n'
+def prepare(table):
+    return 'delete from {0};\ndbcc checkident({0}, reseed, 0);\n'.format(table)
 
 
 def insert(objects):
@@ -13,20 +13,22 @@ def insert(objects):
     for o in objects:
         values.append([o.__dict__[x] for x in columns])
 
-    return _insert(table, columns, values) + '\n'
+    return ('set identity_insert {} on;\n'.format(table)
+            + _insert(table, columns, values)
+            + 'set identity_insert {} off;\n'.format(table))
 
 
-def delete_and_insert(objects):
+def put(objects):
     if type(objects) != list:
         objects = [objects]
 
     table = objects[0].TABLE
 
-    return delete(table) + insert(objects)
+    return prepare(table) + insert(objects)
 
 
 def _insert(table, columns, values):
-    return "insert into {} {} values\n{};\n".format(table,
+    return 'insert into {} {} values\n{};\n'.format(table,
                                                     _columns(columns),
                                                     _values_multiple(values))
 
@@ -36,6 +38,8 @@ def _convert(value):
         return "''"
     elif type(value) == bool:
         return '1' if value else '0'
+    elif type(value) == int:
+        return str(value)
     else:
         return "'" + str(value) + "'"
 

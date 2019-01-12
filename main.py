@@ -2,24 +2,17 @@ import sys
 
 import sql
 from client import Client
-from fake import fake
+from conference import Conference
 from participant import Participant
 
 if __name__ == '__main__':
-    clients = []
-    for _ in range(10):
-        if fake.boolean():
-            clients.append(Client.random_company())
-        else:
-            clients.append(Client.random_individual())
+    clients = [Client.random() for _ in range(3)]
+    participants = [Participant.random() for _ in range(5)]
+    conferences = [Conference.random() for _ in range(2)]
 
-    participants = []
-    for _ in range(15):
-        participants.append(Participant.random())
-
-    result = (sql.delete_and_insert(clients)
-              + sql.delete_and_insert(participants)
-              + sql.insert(Client.random_individual()))
+    result = '\n'.join([sql.put(conferences),
+                        sql.put(clients),
+                        sql.put(participants)])
 
     if len(sys.argv) == 2:
         file_name = sys.argv[1]
