@@ -1,8 +1,14 @@
-def prepare(table):
-    return 'delete from {0};\ndbcc checkident({0}, reseed, 0);\n'.format(table)
+def start():
+    return '''-- remove everything
+exec sys.sp_msforeachtable 'disable trigger all on ?';
+exec sys.sp_msforeachtable 'alter table ? nocheck constraint all';
+exec sys.sp_msforeachtable 'delete from ?';
+exec sys.sp_msforeachtable 'alter table ? check constraint all';
+exec sys.sp_msforeachtable 'enable trigger all on ?';
+'''
 
 
-def insert(objects):
+def put(objects):
     if type(objects) != list:
         objects = [objects]
 
@@ -13,24 +19,17 @@ def insert(objects):
     for o in objects:
         values.append([o.__dict__[x] for x in columns])
 
-    return ('set identity_insert {} on;\n'.format(table)
-            + _insert(table, columns, values)
-            + 'set identity_insert {} off;\n'.format(table))
+    return f'''-- fill {table}
+set identity_insert {table} on;
+{insert(table, columns, values)}
+set identity_insert {table} off;
+'''
 
 
-def put(objects):
-    if type(objects) != list:
-        objects = [objects]
-
-    table = objects[0].TABLE
-
-    return prepare(table) + insert(objects)
-
-
-def _insert(table, columns, values):
-    return 'insert into {} {} values\n{};\n'.format(table,
-                                                    _columns(columns),
-                                                    _values_multiple(values))
+def insert(table, columns, values):
+    return 'insert into {} {} values\n{};'.format(table,
+                                                  _columns(columns),
+                                                  _values_multiple(values))
 
 
 def _convert(value):
