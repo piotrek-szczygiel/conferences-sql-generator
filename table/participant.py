@@ -25,3 +25,7 @@ class Participant:
             fake.last_name(),
             fake.email()
         )
+
+    @staticmethod
+    def randoms(count):
+        return [Participant.random() for _ in range(count)]

@@ -29,6 +29,10 @@ class Client:
             return Client.random_company()
 
     @staticmethod
+    def randoms(count):
+        return [Client.random() for _ in range(count)]
+
+    @staticmethod
     def random_company():
         return Client(
             Client.ID,
