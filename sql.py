@@ -5,6 +5,7 @@ exec sys.sp_msforeachtable 'alter table ? nocheck constraint all';
 exec sys.sp_msforeachtable 'delete from ?';
 exec sys.sp_msforeachtable 'alter table ? check constraint all';
 exec sys.sp_msforeachtable 'enable trigger all on ?';
+
 '''
 
 
@@ -24,6 +25,14 @@ set identity_insert {table} on;
 {insert(table, columns, values)}
 set identity_insert {table} off;
 '''
+
+
+def put_all(tables):
+    result = []
+    for table in tables:
+        result.append(put(table))
+
+    return '\n'.join(result)
 
 
 def insert(table, columns, values):

@@ -22,7 +22,7 @@ class Conference:
     def random():
         return Conference(
             Conference.ID,
-            'Konferencja ' + fake.catch_phrase(),
+            fake.catch_phrase(),
             random.randint(10, 101),
             1.0 if random.randint(0, 10) > 7 else round(random.uniform(0.2, 0.9), 2)
         )

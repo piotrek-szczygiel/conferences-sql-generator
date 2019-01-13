@@ -28,6 +28,15 @@ class Payment:
             round(random.uniform(10.0, 100.0), 2),
             fake.past_datetime(start_date=conference_booking.booking_date),
             random.choice(['przelew bankowy', 'karta płatnicza', 'BLIK', 'PayPal']),
-            random.choice([True, False]),
+            True if random.randint(0, 10) == 9 else False,
             conference_booking.id
         )
+
+    @staticmethod
+    def randoms(conferences_bookings):
+        payments = []
+        for conference_booking in conferences_bookings:
+            for _ in range(random.randint(0, 4)):
+                payments.append(Payment.random(conference_booking))
+
+        return payments
