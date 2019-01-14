@@ -20,19 +20,15 @@ class ConferenceBooking:
         ConferenceBooking.ID += 1
 
     @staticmethod
-    def randoms(db):
+    def random(db):
         result = []
         for cl in random.choices(db.client, k=int(len(db.client) // 1.2)):
             for conf in random.choices(db.conference, k=random.randint(0, 4)):
-
                 date = None
                 for cd in db.conference_day:
                     if cd.conference_id == conf.id:
                         date = cd.start_date
                         break
-
-                if date is None:
-                    continue
 
                 if date > datetime.datetime.now():
                     date = datetime.datetime.now()

@@ -19,28 +19,28 @@ class ConferenceDayBooking:
         ConferenceDayBooking.ID += 1
 
     @staticmethod
-    def randoms(db):
+    def random(db):
         result = []
-        for conference_booking in db.conference_booking:
+        for booking in db.conference_booking:
             for cd in db.conference_day:
-                if cd.conference_id != conference_booking.conference_id:
+                if cd.conference_id != booking.conference_id:
                     continue
 
                 p_count = random.randint(1, 10)
                 s_count = random.randint(0, 2)
+                count = p_count + s_count
 
-                if p_count + s_count + cd._participants > cd.participants_limit:
+                if count + cd._participants > cd.participants_limit:
                     continue
 
-                cd._participants += (p_count + s_count)
+                cd._participants += count
 
                 result.append(ConferenceDayBooking(
                     ConferenceDayBooking.ID,
                     p_count,
                     s_count,
                     cd.id,
-                    conference_booking.id,
-                    True if random.randint(0, 10) == 9 else False
-                ))
+                    booking.id,
+                    True if random.randint(0, 10) == 9 else False))
 
         return result

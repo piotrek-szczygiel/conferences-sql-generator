@@ -18,7 +18,7 @@ class ConferenceDayParticipant:
         ConferenceDayParticipant.ID += 1
 
     @staticmethod
-    def randoms(db):
+    def random(db):
         result = []
         for booking in db.conference_day_booking:
             participants = random.choices(db.participant,
@@ -32,15 +32,13 @@ class ConferenceDayParticipant:
                     ConferenceDayParticipant.ID,
                     participant.id,
                     booking.id,
-                    None
-                ))
+                    None))
 
             for student in students:
                 result.append(ConferenceDayParticipant(
                     ConferenceDayParticipant.ID,
                     student.id,
                     booking.id,
-                    str(random.randint(200000, 300000))
-                ))
+                    str(random.randint(200000, 300000))))
 
         return result

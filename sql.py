@@ -1,4 +1,4 @@
-def start():
+def clear_db():
     return '''-- remove everything
 exec sys.sp_msforeachtable 'disable trigger all on ?';
 exec sys.sp_msforeachtable 'alter table ? nocheck constraint all';
@@ -41,9 +41,7 @@ def put_all(tables):
 def insert(table, columns, values):
     result = []
 
-    # Maximum is 1000 for SQL to work properly
     chunk_size = 1000
-
     if chunk_size > 1:
         separator = '\n'
     else:
@@ -55,6 +53,7 @@ def insert(table, columns, values):
                               _columns(columns),
                               separator,
                               _values_multiple(chunk)))
+
     return '\n'.join(result)
 
 

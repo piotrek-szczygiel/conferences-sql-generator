@@ -19,17 +19,14 @@ class Participant:
         Participant.ID += 1
 
     @staticmethod
-    def random():
-        return Participant(
-            Participant.ID,
-            fake.first_name(),
-            fake.last_name(),
-            fake.email()
-        )
+    def random(db):
+        result = []
+        for _ in range(random.randint(len(db.client) * 5,
+                                      len(db.client) * 15)):
+            result.append(Participant(
+                Participant.ID,
+                fake.first_name(),
+                fake.last_name(),
+                fake.email()))
 
-    @staticmethod
-    def randoms(db):
-        return [Participant.random() for _ in range(random.randint(
-            len(db.client) * 5,
-            len(db.client) * 15
-        ))]
+        return result

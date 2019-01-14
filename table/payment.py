@@ -22,20 +22,19 @@ class Payment:
         Payment.ID += 1
 
     @staticmethod
-    def randoms(db):
+    def random(db):
         result = []
-        for conference_booking in db.conference_booking:
+        for conf_booking in db.conference_booking:
             for _ in range(random.randint(0, 2)):
                 result.append(Payment(
                     Payment.ID,
                     round(random.uniform(10.0, 100.0), 2),
-                    fake.past_datetime(start_date=conference_booking.booking_date),
+                    fake.past_datetime(start_date=conf_booking.booking_date),
                     random.choice(['przelew bankowy',
                                    'karta płatnicza',
                                    'BLIK',
                                    'PayPal']),
                     True if random.randint(0, 10) == 9 else False,
-                    conference_booking.id
-                ))
+                    conf_booking.id))
 
         return result

@@ -19,19 +19,18 @@ class Conference:
         Conference.ID += 1
 
     @staticmethod
-    def random():
-        if random.randint(0, 10) > 7:
-            student_price_percent = 1.0
-        else:
-            student_price_percent = round(random.uniform(0.2, 0.9), 2)
+    def random(db):
+        result = []
+        for _ in range(db.size):
+            if random.randint(0, 10) > 8:
+                student_price_percent = 1.0
+            else:
+                student_price_percent = round(random.uniform(0, 0.7), 2)
 
-        return Conference(
-            Conference.ID,
-            fake.catch_phrase(),
-            random.randint(10, 101),
-            student_price_percent
-        )
+            result.append(Conference(
+                Conference.ID,
+                fake.catch_phrase(),
+                random.randint(10, 101),
+                student_price_percent))
 
-    @staticmethod
-    def randoms(db):
-        return [Conference.random() for _ in range(db.size)]
+        return result

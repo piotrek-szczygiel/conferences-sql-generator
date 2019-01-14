@@ -23,18 +23,16 @@ class Client:
         Client.ID += 1
 
     @staticmethod
-    def random():
-        if fake.boolean():
-            return Client.random_individual()
-        else:
-            return Client.random_company()
+    def random(db):
+        result = []
+        for _ in range(random.randint(len(db.conference) * 15,
+                                      len(db.conference) * 20)):
+            if random.randint(0, 10) > 3:
+                result.append(Client.random_individual())
+            else:
+                result.append(Client.random_company())
 
-    @staticmethod
-    def randoms(db):
-        return [Client.random() for _ in range(random.randint(
-            len(db.conference) * 5,
-            len(db.conference) * 15
-        ))]
+        return result
 
     @staticmethod
     def random_company():

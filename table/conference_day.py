@@ -23,8 +23,8 @@ class ConferenceDay:
         self._participants = 0
 
     @staticmethod
-    def randoms(db):
-        conferences_days = []
+    def random(db):
+        result = []
         for conference in db.conference:
             start_date = fake.date_time_between(start_date='-3y',
                                                 end_date='+1y')
@@ -37,13 +37,12 @@ class ConferenceDay:
             for i in range(days):
                 date = start_date + datetime.timedelta(days=i)
 
-                conferences_days.append(ConferenceDay(
+                result.append(ConferenceDay(
                     ConferenceDay.ID,
                     conference.id,
                     random.randint(100, 300),
                     date,
                     date + datetime.timedelta(hours=random.randint(6, 11)),
-                    fake.address().replace('\n', ', ')
-                ))
+                    fake.address().replace('\n', ', ')))
 
-        return conferences_days
+        return result
