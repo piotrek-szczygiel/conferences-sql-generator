@@ -34,7 +34,7 @@ class Payment:
                                    'karta płatnicza',
                                    'BLIK',
                                    'PayPal']),
-                    True if random.randint(0, 10) == 9 else False,
+                    True if random.randint(0, 10) > 8 else False,
                     conf_booking.id))
 
         return result

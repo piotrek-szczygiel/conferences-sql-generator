@@ -30,7 +30,7 @@ class Conference:
             result.append(Conference(
                 Conference.ID,
                 fake.catch_phrase(),
-                random.randint(10, 101),
+                random.randint(10, 100),
                 student_price_percent))
 
         return result

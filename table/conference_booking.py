@@ -23,7 +23,7 @@ class ConferenceBooking:
     def random(db):
         result = []
         for cl in random.choices(db.client, k=int(len(db.client) // 1.2)):
-            for conf in random.choices(db.conference, k=random.randint(0, 4)):
+            for conf in random.choices(db.conference, k=random.randint(0, 3)):
                 date = None
                 for cd in db.conference_day:
                     if cd.conference_id == conf.id:

@@ -21,11 +21,17 @@ class ConferenceDayParticipant:
     def random(db):
         result = []
         for booking in db.conference_day_booking:
-            participants = random.choices(db.participant,
-                                          k=booking.participants_count)
+            if random.randint(0, 10) > 8:
+                continue
 
-            students = random.choices(db.participant,
-                                      k=booking.students_count)
+            p_count = random.randint(int(booking.participants_count // 2),
+                                     booking.participants_count)
+
+            s_count = random.randint(int(booking.students_count // 2),
+                                     booking.students_count)
+
+            participants = random.choices(db.participant, k=p_count)
+            students = random.choices(db.participant, k=s_count)
 
             for participant in participants:
                 result.append(ConferenceDayParticipant(
@@ -39,6 +45,6 @@ class ConferenceDayParticipant:
                     ConferenceDayParticipant.ID,
                     student.id,
                     booking.id,
-                    str(random.randint(200000, 300000))))
+                    str(random.randint(210000, 299999))))
 
         return result
