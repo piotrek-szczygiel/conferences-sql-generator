@@ -5,7 +5,7 @@ from dataclasses import dataclass
 @dataclass
 class ConferencePrice:
     TABLE = 'conference_price'
-    ID = 1
+    ID = 0
 
     id: int
     conference_id: int
@@ -17,9 +17,9 @@ class ConferencePrice:
         ConferencePrice.ID += 1
 
     @staticmethod
-    def randoms(conferences):
+    def randoms(db):
         conference_prices = []
-        for conference in conferences:
+        for conference in db.conference:
             days = random.randint(5, 15)
             increment = (0.5 / days) * random.uniform(0.6, 0.9)
             for days_before in range(1, days):

@@ -36,14 +36,23 @@ def put_all(tables):
 
 
 def insert(table, columns, values):
-    return 'insert into {} {} values\n{};'.format(table,
-                                                  _columns(columns),
-                                                  _values_multiple(values))
+    result = []
+    for chunk in _chunks(values, 1):
+        result.append('insert into {} {} values {};'
+                      .format(table,
+                              _columns(columns),
+                              _values_multiple(chunk)))
+    return '\n'.join(result)
+
+
+def _chunks(values, size):
+    for i in range(0, len(values), size):
+        yield values[i:i + size]
 
 
 def _convert(value):
     if value is None:
-        return "''"
+        return "null"
     elif type(value) == bool:
         return '1' if value else '0'
     elif type(value) == int:

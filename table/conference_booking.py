@@ -8,7 +8,7 @@ from fake import fake
 @dataclass
 class ConferenceBooking:
     TABLE = 'conference_booking'
-    ID = 1
+    ID = 0
 
     id: int
     conference_id: int
@@ -29,10 +29,13 @@ class ConferenceBooking:
         )
 
     @staticmethod
-    def randoms(conferences, clients):
-        conferences_bookings = []
-        for client in random.choices(clients, k=int(len(clients) * 0.9)):
-            for conference in random.choices(conferences, k=random.randint(1, 4)):
-                conferences_bookings.append(ConferenceBooking.random(conference, client))
+    def randoms(db):
+        result = []
+        for client in random.choices(db.client,
+                                     k=int(len(db.client) // 1.2)):
+            for conference in random.choices(db.conference,
+                                             k=random.choice([1, 1, 1, 2, 3])):
+                result.append(
+                    ConferenceBooking.random(conference, client))
 
-        return conferences_bookings
+        return result

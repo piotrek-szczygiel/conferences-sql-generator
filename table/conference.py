@@ -7,7 +7,7 @@ from fake import fake
 @dataclass
 class Conference:
     TABLE = 'conference'
-    ID = 1
+    ID = 0
 
     id: int
     name: str
@@ -33,5 +33,5 @@ class Conference:
         )
 
     @staticmethod
-    def randoms(count):
-        return [Conference.random() for _ in range(count)]
+    def randoms(db):
+        return [Conference.random() for _ in range(db.size)]

@@ -1,3 +1,4 @@
+import random
 from dataclasses import dataclass
 
 from fake import fake
@@ -6,7 +7,7 @@ from fake import fake
 @dataclass
 class Participant:
     TABLE = 'participant'
-    ID = 1
+    ID = 0
 
     id: int
     first_name: str
@@ -27,5 +28,8 @@ class Participant:
         )
 
     @staticmethod
-    def randoms(count):
-        return [Participant.random() for _ in range(count)]
+    def randoms(db):
+        return [Participant.random() for _ in range(random.randint(
+            len(db.client) * 5,
+            len(db.client) * 15
+        ))]

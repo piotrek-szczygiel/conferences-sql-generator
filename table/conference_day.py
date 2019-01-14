@@ -8,7 +8,7 @@ from fake import fake
 @dataclass
 class ConferenceDay:
     TABLE = 'conference_day'
-    ID = 1
+    ID = 0
 
     id: int
     conference_id: int
@@ -22,9 +22,9 @@ class ConferenceDay:
         ConferenceDay.ID += 1
 
     @staticmethod
-    def randoms(conferences):
+    def randoms(db):
         conferences_days = []
-        for conference in conferences:
+        for conference in db.conference:
             start_date = fake.date_time_between(start_date='-3y',
                                                 end_date='+1y')
 
@@ -39,7 +39,7 @@ class ConferenceDay:
                 conferences_days.append(ConferenceDay(
                     ConferenceDay.ID,
                     conference.id,
-                    random.randint(150, 250),
+                    random.randint(100, 300),
                     date,
                     date + datetime.timedelta(hours=random.randint(6, 11)),
                     fake.address().replace('\n', ', ')

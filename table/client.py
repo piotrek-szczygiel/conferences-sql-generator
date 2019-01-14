@@ -1,3 +1,4 @@
+import random
 from dataclasses import dataclass
 from typing import Optional
 
@@ -7,7 +8,7 @@ from fake import fake
 @dataclass
 class Client:
     TABLE = 'client'
-    ID = 1
+    ID = 0
 
     id: int
     is_company: bool
@@ -29,8 +30,11 @@ class Client:
             return Client.random_company()
 
     @staticmethod
-    def randoms(count):
-        return [Client.random() for _ in range(count)]
+    def randoms(db):
+        return [Client.random() for _ in range(random.randint(
+            len(db.conference) * 5,
+            len(db.conference) * 15
+        ))]
 
     @staticmethod
     def random_company():

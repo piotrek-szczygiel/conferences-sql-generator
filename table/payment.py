@@ -8,7 +8,7 @@ from fake import fake
 @dataclass
 class Payment:
     TABLE = 'payment'
-    ID = 1
+    ID = 0
 
     id: int
     value: float
@@ -33,10 +33,10 @@ class Payment:
         )
 
     @staticmethod
-    def randoms(conferences_bookings):
+    def randoms(db):
         payments = []
-        for conference_booking in conferences_bookings:
-            for _ in range(random.randint(0, 4)):
+        for conference_booking in db.conference_booking:
+            for _ in range(random.randint(0, 3)):
                 payments.append(Payment.random(conference_booking))
 
         return payments
