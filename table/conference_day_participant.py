@@ -20,19 +20,18 @@ class ConferenceDayParticipant:
     @staticmethod
     def randoms(db):
         result = []
-        for conference_day_booking in db.conference_day_booking:
-            joined = random.choices(
-                db.participant,
-                k=conference_day_booking.participants_count +
-                  conference_day_booking.students_count)
-            participants = joined[:conference_day_booking.participants_count]
-            students = joined[conference_day_booking.participants_count:]
+        for booking in db.conference_day_booking:
+            participants = random.choices(db.participant,
+                                          k=booking.participants_count)
+
+            students = random.choices(db.participant,
+                                      k=booking.students_count)
 
             for participant in participants:
                 result.append(ConferenceDayParticipant(
                     ConferenceDayParticipant.ID,
                     participant.id,
-                    conference_day_booking.id,
+                    booking.id,
                     None
                 ))
 
@@ -40,7 +39,7 @@ class ConferenceDayParticipant:
                 result.append(ConferenceDayParticipant(
                     ConferenceDayParticipant.ID,
                     student.id,
-                    conference_day_booking.id,
+                    booking.id,
                     str(random.randint(200000, 300000))
                 ))
 

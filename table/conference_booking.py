@@ -20,22 +20,31 @@ class ConferenceBooking:
         ConferenceBooking.ID += 1
 
     @staticmethod
-    def random(conference, client):
-        return ConferenceBooking(
-            ConferenceBooking.ID,
-            conference.id,
-            client.id,
-            fake.past_datetime(start_date='-1y')
-        )
-
-    @staticmethod
     def randoms(db):
         result = []
-        for client in random.choices(db.client,
-                                     k=int(len(db.client) // 1.2)):
-            for conference in random.choices(db.conference,
-                                             k=random.choice([1, 1, 1, 2, 3])):
-                result.append(
-                    ConferenceBooking.random(conference, client))
+        for cl in random.choices(db.client, k=int(len(db.client) // 1.2)):
+            for conf in random.choices(db.conference, k=random.randint(0, 4)):
+
+                date = None
+                for cd in db.conference_day:
+                    if cd.conference_id == conf.id:
+                        date = cd.start_date
+                        break
+
+                if date is None:
+                    continue
+
+                if date > datetime.datetime.now():
+                    date = datetime.datetime.now()
+
+                date_before = date - datetime.timedelta(weeks=20)
+
+                result.append(ConferenceBooking(
+                    ConferenceBooking.ID,
+                    conf.id,
+                    cl.id,
+                    fake.date_time_between(
+                        start_date=date_before,
+                        end_date=date)))
 
         return result

@@ -14,7 +14,10 @@ def put(objects):
         objects = [objects]
 
     table = objects[0].TABLE
-    columns = [x for x in objects[0].__dict__]
+    columns = []
+    for column in objects[0].__dict__:
+        if not column.startswith('_'):
+            columns.append(column)
     values = []
 
     for o in objects:
@@ -37,10 +40,20 @@ def put_all(tables):
 
 def insert(table, columns, values):
     result = []
-    for chunk in _chunks(values, 1):
-        result.append('insert into {} {} values {};'
+
+    # Maximum is 1000 for SQL to work properly
+    chunk_size = 1000
+
+    if chunk_size > 1:
+        separator = '\n'
+    else:
+        separator = ' '
+
+    for chunk in _chunks(values, chunk_size):
+        result.append('insert into {} {} values{}{};'
                       .format(table,
                               _columns(columns),
+                              separator,
                               _values_multiple(chunk)))
     return '\n'.join(result)
 

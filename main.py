@@ -1,3 +1,4 @@
+import pyodbc
 import sys
 
 import sql
@@ -13,9 +14,9 @@ from table.participant import Participant
 from table.payment import Payment
 
 if __name__ == '__main__':
-    size = 1 if len(sys.argv) < 2 else int(sys.argv[1])
+    conf_count = 10
 
-    db = DB(size)
+    db = DB(conf_count)
 
     db.conference = Conference.randoms(db)
     db.client = Client.randoms(db)
@@ -30,19 +31,29 @@ if __name__ == '__main__':
     result = (sql.start() +
               sql.put_all([
                   db.conference,
-                  db.client,
-                  db.participant,
                   db.conference_day,
-                  db.conference_price,
+                  db.client,
                   db.conference_booking,
-                  db.payment,
                   db.conference_day_booking,
-                  db.conference_day_participant
+                  db.participant,
+                  db.conference_day_participant,
+                  db.conference_price,
+                  db.payment,
               ]))
 
-    if len(sys.argv) >= 3:
+    # Write result to file or send directly to SQL server
+    if len(sys.argv) >= 2:
         file_name = sys.argv[2]
         with open(file_name, 'wb') as file:
             file.write(result.encode('utf-8'))
     else:
-        print(result)
+        with open('conn.txt', 'r') as connection:
+            print('connecting to database...')
+            conn = pyodbc.connect(connection.read())
+
+            print('inserting data for {} conferences...'.format(conf_count))
+            cursor = conn.cursor()
+            cursor.execute(result)
+            conn.commit()
+            conn.close()
+            print('data successfully inserted')

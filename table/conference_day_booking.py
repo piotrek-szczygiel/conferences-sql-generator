@@ -22,16 +22,23 @@ class ConferenceDayBooking:
     def randoms(db):
         result = []
         for conference_booking in db.conference_booking:
-            for conference_day in db.conference_day:
-                if (conference_booking.conference_id
-                        != conference_day.conference_id):
+            for cd in db.conference_day:
+                if cd.conference_id != conference_booking.conference_id:
                     continue
+
+                p_count = random.randint(1, 10)
+                s_count = random.randint(0, 2)
+
+                if p_count + s_count + cd._participants > cd.participants_limit:
+                    continue
+
+                cd._participants += (p_count + s_count)
 
                 result.append(ConferenceDayBooking(
                     ConferenceDayBooking.ID,
-                    random.randint(1, 10),
-                    random.randint(0, 2),
-                    conference_day.id,
+                    p_count,
+                    s_count,
+                    cd.id,
                     conference_booking.id,
                     True if random.randint(0, 10) == 9 else False
                 ))

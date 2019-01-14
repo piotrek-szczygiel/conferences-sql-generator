@@ -17,9 +17,10 @@ class ConferenceDay:
     end_date: datetime
     location: str
 
-    @staticmethod
-    def __post_init__():
+    def __post_init__(self):
         ConferenceDay.ID += 1
+
+        self._participants = 0
 
     @staticmethod
     def randoms(db):
