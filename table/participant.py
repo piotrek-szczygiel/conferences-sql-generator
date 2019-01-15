@@ -14,9 +14,10 @@ class Participant:
     last_name: str
     email: str
 
-    @staticmethod
-    def __post_init__():
+    def __post_init__(self):
         Participant.ID += 1
+
+        self._conferences = []
 
     @staticmethod
     def random(db):

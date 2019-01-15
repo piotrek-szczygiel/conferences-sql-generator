@@ -31,10 +31,15 @@ class ConferenceDayParticipant:
             s_count = random.randint(int(booking.students_count // 2),
                                      booking.students_count)
 
-            participants = random.choices(db.participant, k=p_count)
-            students = random.choices(db.participant, k=s_count)
+            choose = random.sample(db.participant, p_count + s_count)
+            participants = choose[:p_count]
+            students = choose[p_count:]
 
             for participant in participants:
+                if booking.conference_day_id in participant._conferences:
+                    continue
+
+                participant._conferences.append(booking.conference_day_id)
                 result.append(ConferenceDayParticipant(
                     ConferenceDayParticipant.ID,
                     participant.id,
@@ -42,6 +47,10 @@ class ConferenceDayParticipant:
                     None))
 
             for student in students:
+                if booking.conference_day_id in student._conferences:
+                    continue
+
+                student._conferences.append(booking.conference_day_id)
                 result.append(ConferenceDayParticipant(
                     ConferenceDayParticipant.ID,
                     student.id,
