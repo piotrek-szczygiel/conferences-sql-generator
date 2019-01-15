@@ -1,6 +1,8 @@
 import random
 from dataclasses import dataclass
 
+from fake import fake
+
 
 @dataclass
 class ConferenceDayBooking:
@@ -23,6 +25,9 @@ class ConferenceDayBooking:
         result = []
         for booking in db.conference_booking:
             for cd in db.conference_day:
+                if cd._participants == cd.participants_limit:
+                    continue
+
                 if cd.conference_id != booking.conference_id:
                     continue
 
@@ -31,7 +36,12 @@ class ConferenceDayBooking:
                 count = p_count + s_count
 
                 if count + cd._participants > cd.participants_limit:
-                    continue
+                    if fake.boolean():
+                        continue
+                    else:
+                        count = cd.participants_limit - cd._participants
+                        s_count = count // 4
+                        p_count = count - s_count
 
                 cd._participants += count
 

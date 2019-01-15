@@ -13,9 +13,10 @@ class ConferenceDayParticipant:
     conference_day_booking_id: int
     student_id: Optional[str]
 
-    @staticmethod
-    def __post_init__():
+    def __post_init__(self):
         ConferenceDayParticipant.ID += 1
+
+        self._attending_workshop = False
 
     @staticmethod
     def random(db):

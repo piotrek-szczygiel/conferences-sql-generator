@@ -5,6 +5,18 @@ exec sys.sp_msforeachtable 'alter table ? nocheck constraint all';
 exec sys.sp_msforeachtable 'delete from ?';
 exec sys.sp_msforeachtable 'alter table ? check constraint all';
 exec sys.sp_msforeachtable 'enable trigger all on ?';
+set identity_insert conference off;
+set identity_insert client off;
+set identity_insert participant off;
+set identity_insert conference_day off;
+set identity_insert conference_price off;
+set identity_insert conference_booking off;
+set identity_insert payment off;
+set identity_insert conference_day_booking off;
+set identity_insert conference_day_participant off;
+set identity_insert workshop off;
+set identity_insert workshop_booking off;
+set identity_insert workshop_participant off;
 
 '''
 

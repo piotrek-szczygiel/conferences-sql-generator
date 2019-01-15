@@ -9,24 +9,14 @@ from table.conference_price import ConferencePrice
 from table.participant import Participant
 from table.payment import Payment
 from table.workshop import Workshop
+from table.workshop_booking import WorkshopBooking
+from table.workshop_participant import WorkshopParticipant
 
 
 class DB:
     def __init__(self, size):
         self.size = size
 
-        self.conference = []
-        self.client = []
-        self.participant = []
-        self.conference_day = []
-        self.conference_price = []
-        self.conference_booking = []
-        self.payment = []
-        self.conference_day_booking = []
-        self.conference_day_participant = []
-        self.workshop = []
-
-    def generate(self):
         self.conference = Conference.random(self)
         self.client = Client.random(self)
         self.participant = Participant.random(self)
@@ -37,6 +27,8 @@ class DB:
         self.conference_day_booking = ConferenceDayBooking.random(self)
         self.conference_day_participant = ConferenceDayParticipant.random(self)
         self.workshop = Workshop.random(self)
+        self.workshop_booking = WorkshopBooking.random(self)
+        self.workshop_participant = WorkshopParticipant.random(self)
 
     def to_sql(self):
         return (sql.clear_db() +
@@ -50,5 +42,7 @@ class DB:
                     self.conference_day_participant,
                     self.conference_price,
                     self.payment,
-                    self.workshop
+                    self.workshop,
+                    self.workshop_booking,
+                    self.workshop_participant
                 ]))

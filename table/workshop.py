@@ -19,9 +19,10 @@ class Workshop:
     participants_limit: int
     location: str
 
-    @staticmethod
-    def __post_init__():
+    def __post_init__(self):
         Workshop.ID += 1
+
+        self._participants = 0
 
     @staticmethod
     def random(db):

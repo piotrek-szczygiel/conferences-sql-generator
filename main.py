@@ -10,7 +10,6 @@ if __name__ == '__main__':
 
     time1 = time.time()
     db = DB(conf_count)
-    db.generate()
     result = db.to_sql()
     time2 = time.time()
 
