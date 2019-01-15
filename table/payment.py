@@ -26,6 +26,7 @@ class Payment:
         result = []
         for conf_booking in db.conference_booking:
             for _ in range(random.randint(0, 2)):
+                # TODO: make most of the payments cover whole cost
                 result.append(Payment(
                     Payment.ID,
                     round(random.uniform(10.0, 100.0), 2),

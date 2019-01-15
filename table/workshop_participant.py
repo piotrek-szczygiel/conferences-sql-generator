@@ -35,6 +35,7 @@ class WorkshopParticipant:
             work_participants = random.sample(conf_participants, count)
 
             for participant in work_participants:
+                # TODO: let participant attend multiple workshops a day if they don't overlap
                 participant._attending_workshop = True
                 result.append(WorkshopParticipant(
                     WorkshopParticipant.ID,
